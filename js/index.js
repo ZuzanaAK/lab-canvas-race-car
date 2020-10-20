@@ -3,39 +3,33 @@ window.onload = () => {
     startGame();
   };
  
+  let cv = document.getElementById('canvas');
+  let ctx = cv.getContext('2d');
+
   function startGame() {
-    let cv = document.getElementById('canvas');
-    let ctx = cv.getContext('2d');
-    //canvas.style.backgroundColor = 'black'
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    addRoad()
-    addCar()
+    // addRoad()
+    // drawCar()
     carCollision()
-    //carX += carXIncrement
-    
-    //this is for the car to start moving if right or left is pressed (within the canvas)
-    if (isRightArrow && (carX + carWidth < canvas.width) ) {
-      carX += carIncrement
-    }
-    else if (isLeftArrow && (carX > 0) ) {
-      carX -= carIncrement
-    }
+    requestAnimationFrame(updateCanvas)
+
   }  
   
+
+
   //adding the image "road"
   let road = ""
   let roadX = 0;
   let roadY = 0;
  
-  function addRoad () {
- 
-    let ctx = canvas.getContext("2d")
+  function addRoad() {
     let road = new Image()
     road.src = "images/road.png"
  
     ctx.drawImage(road, roadX, roadY, canvas.width, canvas.height )
  
-}
+  }
+
   //adding the image "car" + changing its size
   let car = ""
   let carX = 220;
@@ -43,14 +37,24 @@ window.onload = () => {
   let carWidth = 50
   let carXIncrement = 1
  
-  function addCar () {
- 
-    let ctx = canvas.getContext("2d")
+  function drawCar() {
     let car = new Image()
     car.src = "images/car.png"
- 
     ctx.drawImage(car, carX, carY, carWidth, 100 )
- 
+  }
+
+  function updateCanvas() {
+    if (isRightArrow && (carX + carWidth < canvas.width) ) {
+      carX += carXIncrement
+    }
+    else if (isLeftArrow && (carX > 0) ) {
+      carX -= carXIncrement
+    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    
+    addRoad()
+    drawCar()
+    requestAnimationFrame(updateCanvas)
   }
 
   //initially both (right and left) are set false
@@ -76,7 +80,7 @@ window.onload = () => {
     isRightArrow = false;
     isLeftArrow = false;
     })
-    
+
   //so that the car is always within the canvas
   function carCollision() {
     //right
@@ -90,5 +94,5 @@ window.onload = () => {
     }
   }
  
-  }
+}
  
